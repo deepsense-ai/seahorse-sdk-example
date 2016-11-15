@@ -1,7 +1,7 @@
 # Seahorse SDK usage example
 
 ## Getting started
-You can create a JAR with example operations by running
+You can create a JAR with the following steps:
 
 1. Run `sbt assembly`. This produces a JAR in `target/scala-2.11` directory.
 2. Put this JAR in `$SEAHORSE/jars`, where `$SEAHORSE` is the directory with
