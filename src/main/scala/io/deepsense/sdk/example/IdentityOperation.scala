@@ -16,6 +16,8 @@
 
 package io.deepsense.sdk.example
 
+import scala.reflect.runtime.{universe => ru}
+
 import io.deepsense.deeplang.DOperation.Id
 import io.deepsense.deeplang._
 import io.deepsense.deeplang.doperables.dataframe.DataFrame
@@ -30,4 +32,6 @@ final class IdentityOperation
 
   override protected def execute(input: DataFrame)(context: ExecutionContext): DataFrame = input
   override def params = Array.empty
+  override def tTagTI_0: ru.TypeTag[DataFrame] = implicitly
+  override def tTagTO_0: ru.TypeTag[DataFrame] = implicitly
 }

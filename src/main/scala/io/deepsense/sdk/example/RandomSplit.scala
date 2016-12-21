@@ -3,6 +3,8 @@ package io.deepsense.sdk.example
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Row
 
+import scala.reflect.runtime.{universe => ru}
+
 import io.deepsense.deeplang._
 import io.deepsense.deeplang.doperables.dataframe.DataFrame
 import io.deepsense.deeplang.inference.{InferContext, InferenceWarnings}
@@ -32,7 +34,7 @@ final class RandomSplit()
   )
   setDefault(seed, 0.0)
   def getSeed: Int = $(seed).toInt
-  override val params = declareParams(splitRatio, seed)
+  override val params: Array[Param[_]] = Array(splitRatio, seed)
   override protected def execute(
                                   df: DataFrame)(
                                   context: ExecutionContext): (DataFrame, DataFrame) = {
@@ -47,4 +49,7 @@ final class RandomSplit()
   : ((DKnowledge[DataFrame], DKnowledge[DataFrame]), InferenceWarnings) = {
     ((knowledge, knowledge), InferenceWarnings.empty)
   }
+  override def tTagTI_0: ru.TypeTag[DataFrame] = implicitly
+  override def tTagTO_0: ru.TypeTag[DataFrame] = implicitly
+  override def tTagTO_1: ru.TypeTag[DataFrame] = implicitly
 }

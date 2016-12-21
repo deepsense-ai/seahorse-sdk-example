@@ -25,6 +25,7 @@ import io.deepsense.deeplang._
 import io.deepsense.deeplang.doperables.dataframe.{DataFrame, DataFrameBuilder}
 import io.deepsense.deeplang.inference.InferContext
 import io.deepsense.deeplang.params.custom.InnerWorkflow
+import io.deepsense.sparkutils.SparkSQLSession
 
 object HelperMock {
   private lazy val sparkConf: SparkConf = new SparkConf()
@@ -39,8 +40,8 @@ object HelperMock {
 
   lazy val executionContext: ExecutionContext = {
     val sparkContext = SparkContext.getOrCreate()
-    val sparkSession = (new SparkSession.Builder).getOrCreate()
-    val operableCatalog = CatalogRecorder.createCatalogs().dOperableCatalog
+    val sparkSession = new SparkSQLSession(sparkContext)
+    val operableCatalog = CatalogRecorder.catalogs.dOperableCatalog
     val innerWorkflowExecutor = new InnerWorkflowExecutor {
       override def execute(
           executionContext: CommonExecutionContext,
@@ -50,26 +51,41 @@ object HelperMock {
       override def toJson(innerWorkflow: InnerWorkflow): JsObject = ???
     }
     val dataFrameStorage = new DataFrameStorage {
-      override def getInputDataFrame(workflowId: Id, nodeId: Id, portNumber: Int): Option[SparkDataFrame] = ???
-      override def removeNodeInputDataFrames(workflowId: Id, nodeId: Id, portNumber: Int): Unit = ???
-      override def setInputDataFrame(workflowId: Id, nodeId: Id, portNumber: Int, dataFrame: SparkDataFrame): Unit = ???
-      override def setOutputDataFrame(
-          workflowId: Id, nodeId: Id, portNumber: Int, dataFrame: SparkDataFrame): Unit = ???
+      override def getInputDataFrame(workflowId: Id, nodeId: Id, portNumber: Int):
+        Option[SparkDataFrame] = ???
+
+      override def setInputDataFrame(workflowId: Id,
+          nodeId: Id,
+          portNumber: Int,
+          dataFrame: SparkDataFrame): Unit = ???
+
+      override def removeNodeInputDataFrames(workflowId: Id, nodeId: Id, portNumber: Int): Unit =
+        ???
+
+      override def removeNodeInputDataFrames(workflowId: Id, nodeId: Id): Unit = ???
+
+      override def getOutputDataFrame(workflowId: Id, nodeId: Id, portNumber: Int):
+      Option[SparkDataFrame] = ???
+
+      override def setOutputDataFrame(workflowId: Id, nodeId: Id, portNumber: Int, dataFrame:
+      SparkDataFrame): Unit = ???
+
       override def removeNodeOutputDataFrames(workflowId: Id, nodeId: Id): Unit = ???
-      override def getOutputDataFrame(workflowId: Id, nodeId: Id, portNumber: Int): Option[SparkDataFrame] = ???
     }
     val codeExecutor: CustomCodeExecutor = new CustomCodeExecutor {
       override def run(workflowId: String, nodeId: String, code: String): Unit = ???
       override def isValid(code: String): Boolean = ???
     }
 
-    val inferContext = InferContext(DataFrameBuilder(sparkSession), "foo", operableCatalog, innerWorkflowExecutor)
+    val inferContext = InferContext(DataFrameBuilder(sparkSession), "foo", operableCatalog,
+      innerWorkflowExecutor)
     val codeExecutionProvider =
       CustomCodeExecutionProvider(codeExecutor, codeExecutor, new OperationExecutionDispatcher)
     ExecutionContext(
       sparkContext,
       sparkSession,
       inferContext,
+      ExecutionMode.Batch,
       LocalFileSystemClient(),
       "/tmp",
       "foo",
@@ -78,6 +94,8 @@ object HelperMock {
         dataFrameStorage,
         "b3eae503-c9a1-442c-9a78-992617cd939e",
         "fc84c1dd-ba6b-4799-b68e-1e5d06e8007b"),
+      None,
+      None,
       ContextualCustomCodeExecutor(codeExecutionProvider,
         "b3eae503-c9a1-442c-9a78-992617cd939e",
         "fc84c1dd-ba6b-4799-b68e-1e5d06e8007b")
