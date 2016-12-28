@@ -3,7 +3,7 @@ version := "1.0"
 scalaVersion := "2.11.8"
 
 resolvers += Resolver.sonatypeRepo("public")
-libraryDependencies += "io.deepsense" %% "deepsense-seahorse-deeplang" % "1.4.0-RC1" % Provided
+libraryDependencies += "io.deepsense" %% "deepsense-seahorse-deeplang" % "1.4.0-RC1-SNAPSHOT" % Provided
 
 // TODO Get rid of this - find a way to do it properly in seahorse-workflow-executor
 // These dependencies on Spark are necessary. As deeplang doesn't export its Spark dependencies, lack of them
