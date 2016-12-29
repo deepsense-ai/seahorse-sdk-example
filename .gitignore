@@ -15,6 +15,9 @@ src_managed/
 project/boot/
 project/plugins/project/
 
+# build modifications overriding default behaviour
+*dev_override_build.sbt
+
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
