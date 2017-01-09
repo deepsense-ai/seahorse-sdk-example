@@ -28,7 +28,7 @@ final class IdentityOperation
   extends DOperation1To1[DataFrame, DataFrame] {
   override val id: Id = "e9990168-daf7-44c6-8e0c-fbc50456fbec"
   override val name: String = "Identity"
-  override val description: String = "Doesn't do anything"
+  override val description = "Doesn't do anything"
 
   override protected def execute(input: DataFrame)(context: ExecutionContext): DataFrame = input
   override def params = Array.empty
