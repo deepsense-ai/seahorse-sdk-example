@@ -45,7 +45,7 @@ object HelperMock {
   lazy val executionContext: ExecutionContext = {
     val sparkContext = SparkContext.getOrCreate()
     val sparkSession = new SparkSQLSession(sparkContext)
-    val operableCatalog = CatalogRecorder.resourcesCatalogRecorder.catalogs.dOperableCatalog
+    val catalog = CatalogRecorder.resourcesCatalogRecorder.catalogs
     val innerWorkflowExecutor = new InnerWorkflowExecutor {
       override def execute(
           executionContext: CommonExecutionContext,
@@ -82,8 +82,7 @@ object HelperMock {
     }
 
     val inferContext = InferContext(DataFrameBuilder(sparkSession),
-      operableCatalog,
-      innerWorkflowExecutor,
+      catalog,
       new DatasourceInMemoryClient(Nil))
 
     val codeExecutionProvider =
