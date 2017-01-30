@@ -14,6 +14,8 @@ libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.0.2" % Provided
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % Test
 
+libraryDependencies += "com.esri.geometry" % "esri-geometry-api" % "1.0"
+
 assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)
 
 
