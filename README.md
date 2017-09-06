@@ -49,7 +49,7 @@ Finally, we declare operation's parameters. Our operations does not have any, so
 
 ### Random Split
 This example is slightly more advanced and more practical. We implement `RandomSplit`, a simpler version of
-`io.deepsense.deeplang.doperations.Split`, which splits DataFrame in two with given ratio. You can find full source
+`ai.deepsense.deeplang.doperations.Split`, which splits DataFrame in two with given ratio. You can find full source
 in [RandomSplit.scala](src/main/scala/io/deepsense/sdk/example/RandomSplit.scala).
 
 

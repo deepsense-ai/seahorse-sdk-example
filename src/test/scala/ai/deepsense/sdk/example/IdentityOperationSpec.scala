@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.deepsense.sdk.example
+package ai.deepsense.sdk.example
 
 import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 import org.apache.spark.sql.Row
 import org.scalatest._
 
-import io.deepsense.deeplang.doperables.dataframe.DataFrame
+import ai.deepsense.deeplang.doperables.dataframe.DataFrame
 
 class IdentityOperationSpec extends WordSpec with Matchers {
   "IdentityOperation" should {

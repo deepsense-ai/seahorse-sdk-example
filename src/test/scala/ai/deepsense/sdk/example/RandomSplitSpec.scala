@@ -1,10 +1,10 @@
-package io.deepsense.sdk.example
+package ai.deepsense.sdk.example
 
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 import org.scalatest.{Matchers, WordSpec}
 
-import io.deepsense.deeplang.doperables.dataframe.DataFrame
+import ai.deepsense.deeplang.doperables.dataframe.DataFrame
 
 class RandomSplitSpec  extends WordSpec with Matchers {
   "RandomSplit" should {

@@ -1,16 +1,16 @@
-package io.deepsense.sdk.example
+package ai.deepsense.sdk.example
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Row
 
 import scala.reflect.runtime.{universe => ru}
 
-import io.deepsense.deeplang._
-import io.deepsense.deeplang.doperables.dataframe.DataFrame
-import io.deepsense.deeplang.inference.{InferContext, InferenceWarnings}
-import io.deepsense.deeplang.params._
-import io.deepsense.deeplang.params.validators.RangeValidator
-import io.deepsense.deeplang.refl.Register
+import ai.deepsense.deeplang._
+import ai.deepsense.deeplang.doperables.dataframe.DataFrame
+import ai.deepsense.deeplang.inference.{InferContext, InferenceWarnings}
+import ai.deepsense.deeplang.params._
+import ai.deepsense.deeplang.params.validators.RangeValidator
+import ai.deepsense.deeplang.refl.Register
 
 @Register
 final class RandomSplit()

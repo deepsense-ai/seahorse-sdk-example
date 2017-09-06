@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.deepsense.sdk.example
+package ai.deepsense.sdk.example
 
 import java.util.UUID
 
@@ -22,14 +22,14 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.{SparkSession, DataFrame => SparkDataFrame}
 import spray.json.JsObject
 
-import io.deepsense.api.datasourcemanager.model.Datasource
-import io.deepsense.commons.models.Id
-import io.deepsense.commons.rest.client.datasources.{DatasourceClient, DatasourceInMemoryClient, DatasourceInMemoryClientFactory}
-import io.deepsense.deeplang._
-import io.deepsense.deeplang.doperables.dataframe.{DataFrame, DataFrameBuilder}
-import io.deepsense.deeplang.inference.InferContext
-import io.deepsense.deeplang.params.custom.InnerWorkflow
-import io.deepsense.sparkutils.SparkSQLSession
+import ai.deepsense.api.datasourcemanager.model.Datasource
+import ai.deepsense.commons.models.Id
+import ai.deepsense.commons.rest.client.datasources.{DatasourceClient, DatasourceInMemoryClient, DatasourceInMemoryClientFactory}
+import ai.deepsense.deeplang._
+import ai.deepsense.deeplang.doperables.dataframe.{DataFrame, DataFrameBuilder}
+import ai.deepsense.deeplang.inference.InferContext
+import ai.deepsense.deeplang.params.custom.InnerWorkflow
+import ai.deepsense.sparkutils.SparkSQLSession
 
 object HelperMock {
   private lazy val sparkConf: SparkConf = new SparkConf()
