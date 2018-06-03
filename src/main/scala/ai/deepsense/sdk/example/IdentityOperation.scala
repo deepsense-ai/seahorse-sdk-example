@@ -31,7 +31,7 @@ final class IdentityOperation
   override val description = "Doesn't do anything"
 
   override protected def execute(input: DataFrame)(context: ExecutionContext): DataFrame = input
-  override def params = Array.empty
+  override def specificParams = Array.empty
   override def tTagTI_0: ru.TypeTag[DataFrame] = implicitly
   override def tTagTO_0: ru.TypeTag[DataFrame] = implicitly
 }

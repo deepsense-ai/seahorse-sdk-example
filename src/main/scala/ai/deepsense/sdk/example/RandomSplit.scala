@@ -50,7 +50,7 @@ final class RandomSplit()
   )
   setDefault(seed, 0.0)
   def getSeed: Int = $(seed).toInt
-  override val params: Array[Param[_]] = Array(splitRatio, seed)
+  override val specificParams: Array[Param[_]] = Array(splitRatio, seed)
   override protected def execute(
                                   df: DataFrame)(
                                   context: ExecutionContext): (DataFrame, DataFrame) = {

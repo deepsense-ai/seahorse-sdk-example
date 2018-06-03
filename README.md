@@ -44,7 +44,7 @@ Now for the "core logic" of our operation. In our case we simply return the
 ```
 Finally, we declare operation's parameters. Our operations does not have any, so empty `Array` is returned.
 ```scala
-    override def params = Array.empty
+    override def specificParams = Array.empty
 ```
 
 ### Random Split
@@ -98,7 +98,7 @@ Now, we declare which parameters this operation has, together with order in whic
 `splitRatio` is more important, so it goes first.
 `declareParams` will additionally check that we did not miss any parameter.
 ```scala
-  override val params = declareParams(splitRatio, seed)
+  override val specificParams = declareParams(splitRatio, seed)
 ```
 
 Execution is pretty straightforward. Schema of resulting DataFrames is the same as the input DataFrame.
