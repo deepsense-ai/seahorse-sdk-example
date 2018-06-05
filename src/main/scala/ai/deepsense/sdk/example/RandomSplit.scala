@@ -28,7 +28,6 @@ import ai.deepsense.deeplang.params._
 import ai.deepsense.deeplang.params.validators.RangeValidator
 import ai.deepsense.deeplang.refl.Register
 
-@Register
 final class RandomSplit()
   extends DOperation1To2[DataFrame, DataFrame, DataFrame] with Params {
   override val id: DOperation.Id = "37648959-2424-4c50-b0af-f652565ebd91"
