@@ -96,9 +96,8 @@ Similarly, we give user ability to provide a seed for a pseudorandom number gene
 
 Now, we declare which parameters this operation has, together with order in which they will be shown to user.
 `splitRatio` is more important, so it goes first.
-`declareParams` will additionally check that we did not miss any parameter.
 ```scala
-  override val specificParams = declareParams(splitRatio, seed)
+  override val specificParams: Array[Param[_]] = Array(splitRatio, seed)
 ```
 
 Execution is pretty straightforward. Schema of resulting DataFrames is the same as the input DataFrame.
@@ -128,3 +127,25 @@ and we return no warnings.
     ((knowledge, knowledge), InferenceWarnings.empty)
   }
 ```
+
+
+## Second operation registration method
+`SPIRegistration` is an example of another method of operation registration in Seahorse. It extends `CatalogRegistrant` and overloads `register` method. Inside this method you pass factories operations as arguments to `registerOperation` method. 
+
+For example:
+```scala
+registrar.registerOperation(SPIRegistration.CustomCategory, () => new RandomVector(), prios.next)
+```
+register RandomVector operation in CustomCategory. Third argument is operation order.
+
+`SPIRegistration` is loaded by `ServiceLoader`. `ServiceLoader` can find `SPIRegistration` using `resources/META-INF/services/ai.deepsense.deeplang.catalogs.spi.CatalogRegistrant` file. Its content are fully qualified binary names of classes, `ai.deepsense.sdk.example.SPIRegistration` for `SPIRegistration`
+
+
+### Operation and Catalog order in frontend 
+`SortPriority` is used to define order on operation palette visible in application. It is passed as third argument to `registerOperation` method. It is one Integer number. If one operation SortPriority is lower then second operation SortPriority then this operation will be first on palette.
+
+There are couple of classes of `SortPriority`:
+- (MIN_INT, 0) for your operations that should appear before core Seahorse operations
+- every 100th element in [0, 2^20) is reserved for core Seahorse operations (0, 100, 200, etc.)
+- [0, 2^20) except numbers dividable by 100 for your operation that should be placed between core operation
+- [2^20, MAX_INT) for you operation that should appear after core Seahorse operations
