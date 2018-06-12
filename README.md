@@ -128,7 +128,6 @@ and we return no warnings.
   }
 ```
 
-
 ## Second operation registration method
 `SPIRegistration` is an example of another method of operation registration in Seahorse. It extends `CatalogRegistrant` and overloads `register` method. Inside this method you pass factories operations as arguments to `registerOperation` method. 
 
@@ -149,3 +148,17 @@ There are couple of classes of `SortPriority`:
 - every 100th element in [0, 2^20) is reserved for core Seahorse operations (0, 100, 200, etc.)
 - [0, 2^20) except numbers dividable by 100 for your operation that should be placed between core operation
 - [2^20, MAX_INT) for you operation that should appear after core Seahorse operations
+
+
+## Operable examples
+`AbsEvaluator` is an example of DOperable defined in SDK. It extends Evaluator and implements _evaluate and _infer methods. `AbsEvaluator` is registered in Seahorse using `SPIRegistration` class.
+
+```scala
+registrar.registerOperable[AbsEvaluator]()
+```
+
+`CreateAbsEvaluator` operation is created so AbsEvaluator can be created. `CreateAbsEvaluator` is visible in operation palette. It is also registrated using `SPIRegistration` class.
+
+```scala
+registrar.registerOperation(UserDefined, () => new CreateAbsEvaluator(), sdkDefault.nextCore())
+```

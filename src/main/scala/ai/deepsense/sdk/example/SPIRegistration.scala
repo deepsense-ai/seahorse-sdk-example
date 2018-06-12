@@ -16,7 +16,7 @@
 
 package ai.deepsense.sdk.example
 
-import ai.deepsense.deeplang.DOperationCategories.{Action, Filtering}
+import ai.deepsense.deeplang.DOperationCategories.{Action, Filtering, UserDefined}
 import ai.deepsense.deeplang.catalogs.SortPriority
 import ai.deepsense.deeplang.catalogs.doperations.DOperationCategory
 import ai.deepsense.deeplang.catalogs.spi.{CatalogRegistrant, CatalogRegistrar}
@@ -30,6 +30,9 @@ class SPIRegistration extends CatalogRegistrant {
     val prios = SortPriority(12345).inSequence(10)
     registrar.registerOperation(SPIRegistration.CustomCategory, () => new RandomVector(), prios.next)
     registrar.registerOperation(Filtering, () => new RandomSplit(), SortPriority.lowerBound.next(1))
+    val sdkDefault = SortPriority.sdkDefault
+    registrar.registerOperation(UserDefined, () => new CreateAbsEvaluator(), sdkDefault.nextCore())
+    registrar.registerOperable[AbsEvaluator]()
   }
 }
 
