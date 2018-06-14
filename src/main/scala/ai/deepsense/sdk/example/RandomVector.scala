@@ -20,12 +20,16 @@ package ai.deepsense.sdk.example
 import ai.deepsense.deeplang.DOperation.Id
 import ai.deepsense.deeplang.doperables.dataframe.DataFrame
 import ai.deepsense.deeplang.params.validators.RangeValidator
-import ai.deepsense.deeplang.params.{NumericParam, Param}
+import ai.deepsense.deeplang.params.{BooleanParam, NumericParam, Param, Params}
 import ai.deepsense.deeplang.{DOperation0To1, ExecutionContext}
-import org.apache.spark.ml.linalg.{Vectors, Vector}
+import org.apache.spark.ml.linalg.{Vector, Vectors}
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
-
 import scala.reflect.runtime.universe._
+
+import ai.deepsense.deeplang.doperables.DatetimeDecomposer.TimestampPart
+import ai.deepsense.deeplang.doperables.spark.wrappers.params.common.OptionalQuantilesColumnChoice
+import ai.deepsense.deeplang.params.choice.{Choice, ChoiceParam, MultipleChoiceParam}
+import ai.deepsense.deeplang.params.wrappers.spark.SingleColumnCreatorParamWrapper
 
 /**
   * Serves as a source of random vector data. Also exemplifies use of SPI for registering
@@ -36,7 +40,7 @@ class RandomVector extends DOperation0To1[DataFrame] {
   override val id: Id = "c00bcfe4-c13b-40af-ae4d-bacfe0f1f73a"
   override val name: String = "Random Vector DataFrame"
   override val description: String = "Generates a DataFrame containing random vectors."
-  override def specificParams: Array[Param[_]] = Array(vectorLength, numRows)
+  override def specificParams: Array[Param[_]] = Array(vectorLength, numRows, shouldBias)
 
   val vectorLength = NumericParam(
     name = "vector length",
@@ -56,6 +60,12 @@ class RandomVector extends DOperation0To1[DataFrame] {
   def getNumRows: Int = $(numRows).toInt
   def setNumRows(count: Int): this.type = set(numRows, count.toDouble)
 
+  val shouldBias = ChoiceParam[BiasPart](
+    name = "should bias",
+    description = Some("Should numbers be biased in some direction")
+  )
+  setDefault(shouldBias, NoBiasNumber())
+
   override protected def execute()(context: ExecutionContext): DataFrame = {
     val len = getVectorLength
     val count = getNumRows
@@ -74,4 +84,19 @@ class RandomVector extends DOperation0To1[DataFrame] {
 
     DataFrame.fromSparkDataFrame(df)
   }
+}
+
+
+sealed trait BiasPart extends Choice {
+  override val choiceOrder: List[Class[_ <: Choice]] = List(classOf[NoBiasNumber], classOf[BiasNumber])
+}
+case class BiasNumber() extends BiasPart {
+  override val name: String = "number"
+  val number = NumericParam(name = "number", description = None)
+  override val params: Array[Param[_]] = Array(number)
+}
+
+case class NoBiasNumber() extends BiasPart {
+  override val name: String = "no"
+  override val params: Array[Param[_]] = Array()
 }
